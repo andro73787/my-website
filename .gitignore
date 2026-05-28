@@ -6,3 +6,9 @@ mni tetgeleguud/
 .DS_Store
 後期/
 .DS_Store
+
+*.png
+*.docx
+*.py
+.localized
+.DS_Store
