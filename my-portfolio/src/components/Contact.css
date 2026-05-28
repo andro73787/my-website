@@ -1,0 +1,230 @@
+.contact {
+  background: #0a0a0a;
+  padding: 7rem 2rem 3rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  position: relative;
+}
+
+.contact::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  margin-bottom: 7rem;
+  margin-top: -7rem;
+}
+
+.contact__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Heading ── */
+.contact__label {
+  color: #00d4ff;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+
+.contact__title {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.contact__sub {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0 0 3rem;
+}
+
+/* ── Layout ── */
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .contact__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Form ── */
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 500px) {
+  .contact__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contact__field label {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.contact__field input,
+.contact__field textarea {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.6rem;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  font-family: inherit;
+  padding: 0.75rem 1rem;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact__field input::placeholder,
+.contact__field textarea::placeholder {
+  color: #374151;
+}
+
+.contact__field input:focus,
+.contact__field textarea:focus {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.07);
+}
+
+/* ── Submit button ── */
+.contact__btn {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #00d4ff, #a78bfa);
+  color: #0a0a0a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 212, 255, 0.3);
+}
+
+/* ── Success state ── */
+.contact__thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 1rem;
+  background: rgba(0, 212, 255, 0.04);
+}
+
+.contact__thanks-icon {
+  font-size: 2.5rem;
+  color: #00d4ff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #00d4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.contact__thanks p {
+  color: #9ca3af;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── Side ── */
+.contact__side {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact__info-block h3 {
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+.contact__info-block p {
+  color: #6b7280;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Socials ── */
+.contact__socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact__social {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.6rem;
+  background: #111;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.contact__social:hover {
+  color: #00d4ff;
+  border-color: rgba(0, 212, 255, 0.25);
+  transform: translateX(4px);
+}
+
+/* ── Footer ── */
+.contact__footer {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.contact__footer p {
+  color: #374151;
+  font-size: 0.85rem;
+  margin: 0;
+}
