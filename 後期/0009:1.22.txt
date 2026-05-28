@@ -1,0 +1,288 @@
+#include <M5StickCPlus2.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include "LoRa_E220.h"
+
+// LoRa Pins
+#define LORA_RX 33
+#define LORA_TX 32
+
+LoRa_E220 lora(&Serial2, LORA_RX, LORA_TX, UART_BPS_RATE_9600);
+ConfigurationMessage config;
+
+// WiFi Configuration
+const char* ssid = "iPhone";
+const char* password = "57378712";
+
+// Ambient Configuration
+const char* ambientHost = "ambidata.io";
+unsigned int channelId = 97413;
+const char* writeKey = "f7ec51d07d2cd15a";
+
+// Variables
+float lastTemp = 0.0;
+float lastHumi = 0.0;
+int receiveCount = 0;
+int sendCount = 0;
+bool wifiConnected = false;
+bool loraReady = false;
+
+void setup() {
+    auto cfg = M5.config();
+    StickCP2.begin(cfg);
+    
+    Serial.begin(115200);
+    Serial2.begin(9600, SERIAL_8N1, LORA_RX, LORA_TX);
+    
+    StickCP2.Display.setRotation(1);
+    StickCP2.Display.setTextColor(GREEN);
+    StickCP2.Display.setTextSize(1);
+    StickCP2.Display.fillScreen(BLACK);
+    StickCP2.Display.setTextScroll(true);
+    
+    StickCP2.Display.printf("*LoRa E220 JP*\n");
+    StickCP2.Display.printf("RECEIVER 0009\n");
+    
+    Serial.println("\n=== LoRa Receiver 0009 ===");
+    
+    delay(2000);
+    
+    // Initialize LoRa
+    StickCP2.Display.fillScreen(BLACK);
+    StickCP2.Display.setCursor(0, 0);
+    StickCP2.Display.printf("Initializing LoRa...\n");
+    
+    lora.begin();
+    
+    // Set default config
+    lora.SetDefaultConfigValue(config);
+    
+    // Configure LoRa settings
+    config.own_address              = 0x0009;
+    config.baud_rate                = BAUD_9600;
+    config.air_data_rate            = BW125K_SF9;
+    config.subpacket_size           = SUBPACKET_200_BYTE;
+    config.rssi_ambient_noise_flag  = RSSI_AMBIENT_NOISE_ENABLE;
+    config.transmitting_power       = TX_POWER_13dBm;
+    config.own_channel              = 0x00;
+    config.rssi_byte_flag           = RSSI_BYTE_ENABLE;
+    config.transmission_method_type = UART_P2P_MODE;
+    config.lbt_flag                 = LBT_DISABLE;
+    config.wor_cycle                = WOR_2000MS;
+    config.encryption_key           = 0x1234;
+    config.target_address           = 0x0002;
+    config.target_channel           = 0x00;
+    
+    // Initialize LoRa with config
+    if (lora.InitLoRaSetting(config) != 0) {
+        StickCP2.Display.printf("init error\n");
+        StickCP2.Display.printf("pull M0,M1 to 1\n");
+        StickCP2.Display.printf("or click Btn\n");
+        
+        while (lora.InitLoRaSetting(config) != 0) {
+            M5.update();
+            if (M5.BtnA.wasPressed() || M5.BtnB.wasPressed()) {
+                break;
+            }
+        }
+    }
+    
+    StickCP2.Display.printf("init succeeded\n");
+    StickCP2.Display.printf("pull M0,M1 to 0\n");
+    
+    Serial.println("LoRa initialized");
+    Serial.println("Address: 0009");
+    Serial.println("From: 0002");
+    Serial.println("Channel: 0");
+    
+    loraReady = true;
+    delay(3000);
+    
+    // Connect WiFi
+    connectWiFi();
+    
+    // Ready
+    StickCP2.Display.fillScreen(BLACK);
+    StickCP2.Display.setCursor(0, 0);
+    StickCP2.Display.setTextColor(GREEN);
+    StickCP2.Display.printf("System Ready!\n");
+    StickCP2.Display.setTextColor(WHITE);
+    StickCP2.Display.printf("Waiting data...\n");
+    
+    Serial.println("System ready");
+    Serial.println("Listening for LoRa\n");
+    
+    delay(2000);
+}
+
+void loop() {
+    M5.update();
+    
+    // Receive LoRa data
+    if (lora.available() > 0) {
+        ResponseContainer rc = lora.receiveMessage();
+        
+        if (rc.status.code == 1) {
+            String received = rc.data;
+            received.trim();
+            
+            if (received.length() > 0) {
+                receiveCount++;
+                
+                Serial.println("--- Receive #" + String(receiveCount) + " ---");
+                Serial.println("Raw: " + received);
+                
+                // Parse data: "24.5,40.2"
+                int commaIndex = received.indexOf(',');
+                
+                if (commaIndex > 0) {
+                    String tempStr = received.substring(0, commaIndex);
+                    String humiStr = received.substring(commaIndex + 1);
+                    
+                    lastTemp = tempStr.toFloat();
+                    lastHumi = humiStr.toFloat();
+                    
+                    Serial.println("Temp: " + String(lastTemp, 1) + " C");
+                    Serial.println("Humi: " + String(lastHumi, 1) + " %");
+                    
+                    // Display
+                    StickCP2.Display.fillScreen(BLACK);
+                    StickCP2.Display.setCursor(0, 0);
+                    StickCP2.Display.setTextColor(CYAN);
+                    StickCP2.Display.printf("RECEIVER 0009\n");
+                    StickCP2.Display.setTextColor(WHITE);
+                    
+                    StickCP2.Display.setTextColor(GREEN);
+                    StickCP2.Display.printf("Received!\n");
+                    StickCP2.Display.setTextColor(WHITE);
+                    
+                    StickCP2.Display.setTextColor(RED);
+                    StickCP2.Display.printf("T: %.1f C\n", lastTemp);
+                    StickCP2.Display.setTextColor(BLUE);
+                    StickCP2.Display.printf("H: %.1f %%\n", lastHumi);
+                    StickCP2.Display.setTextColor(WHITE);
+                    StickCP2.Display.printf("\n");
+                    
+                    // Send to Ambient
+                    sendToAmbient(lastTemp, lastHumi);
+                }
+                
+                Serial.println();
+            }
+        }
+    }
+    
+    // Button A: Reconnect WiFi
+    if (M5.BtnA.wasPressed()) {
+        StickCP2.Display.fillScreen(BLACK);
+        StickCP2.Display.setCursor(0, 0);
+        StickCP2.Display.printf("Reconnecting...\n");
+        connectWiFi();
+    }
+    
+    delay(100);
+}
+
+void connectWiFi() {
+    StickCP2.Display.fillScreen(BLACK);
+    StickCP2.Display.setCursor(0, 0);
+    StickCP2.Display.printf("WiFi Connect\n");
+    StickCP2.Display.printf("SSID: %s\n", ssid);
+    
+    Serial.println("Connecting to WiFi...");
+    Serial.println("SSID: " + String(ssid));
+    
+    WiFi.disconnect(true);
+    delay(1000);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+    
+    int attempts = 0;
+    while (WiFi.status() != WL_CONNECTED && attempts < 30) {
+        delay(500);
+        Serial.print(".");
+        StickCP2.Display.printf(".");
+        attempts++;
+    }
+    
+    StickCP2.Display.fillScreen(BLACK);
+    StickCP2.Display.setCursor(0, 0);
+    
+    if (WiFi.status() == WL_CONNECTED) {
+        wifiConnected = true;
+        
+        StickCP2.Display.setTextColor(GREEN);
+        StickCP2.Display.printf("WiFi: OK\n");
+        StickCP2.Display.setTextColor(WHITE);
+        StickCP2.Display.printf("IP: %s\n", WiFi.localIP().toString().c_str());
+        StickCP2.Display.printf("RSSI: %d dBm\n", WiFi.RSSI());
+        
+        Serial.println("\nWiFi connected!");
+        Serial.println("IP: " + WiFi.localIP().toString());
+        Serial.println("Signal: " + String(WiFi.RSSI()) + " dBm");
+        
+    } else {
+        wifiConnected = false;
+        
+        StickCP2.Display.setTextColor(RED);
+        StickCP2.Display.printf("WiFi: Failed\n");
+        StickCP2.Display.setTextColor(WHITE);
+        StickCP2.Display.printf("Check settings\n");
+        StickCP2.Display.printf("Press A to retry\n");
+        
+        Serial.println("\nWiFi failed!");
+    }
+    
+    delay(3000);
+}
+
+void sendToAmbient(float temp, float humi) {
+    if (!wifiConnected || WiFi.status() != WL_CONNECTED) {
+        StickCP2.Display.printf("WiFi disconnected\n");
+        Serial.println("Cannot send: WiFi disconnected");
+        return;
+    }
+    
+    sendCount++;
+    
+    HTTPClient http;
+    String url = "http://" + String(ambientHost) + "/api/v2/channels/" + String(channelId) + "/data";
+    
+    Serial.println("Sending to Ambient...");
+    
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+    
+    String json = "{\"writeKey\":\"" + String(writeKey) + "\",";
+    json += "\"d1\":\"" + String(temp, 1) + "\",";
+    json += "\"d2\":\"" + String(humi, 1) + "\"}";
+    
+    int httpCode = http.POST(json);
+    
+    StickCP2.Display.printf("Sending...\n");
+    
+    if (httpCode > 0) {
+        Serial.println("HTTP: " + String(httpCode));
+        
+        if (httpCode == 200) {
+            StickCP2.Display.setTextColor(GREEN);
+            StickCP2.Display.printf("Ambient: OK!\n");
+            StickCP2.Display.setTextColor(WHITE);
+            Serial.println("Ambient: Success");
+        } else {
+            StickCP2.Display.setTextColor(YELLOW);
+            StickCP2.Display.printf("HTTP: %d\n", httpCode);
+            StickCP2.Display.setTextColor(WHITE);
+        }
+    } else {
+        StickCP2.Display.setTextColor(RED);
+        StickCP2.Display.printf("Ambient: Failed\n");
+        StickCP2.Display.setTextColor(WHITE);
+        Serial.println("Ambient: Error");
+    }
+    
+    StickCP2.Display.printf("Total: %d\n", sendCount);
+    
+    http.end();
+}
+```

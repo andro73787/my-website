@@ -1,0 +1,104 @@
+// LORA 0009 КОД (Хүлээн авагч + Ambient илгээгч)
+
+#include <M5Stack.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// WiFi тохиргоо
+const char* ssid = "iPhone";
+const char* password = "57378712";
+
+// Ambient тохиргоо
+const char* channelId = "97413";   // Ambient channel ID
+const char* writeKey = "f7ec51d07d2cd15a";   // Write Key
+
+// LoRa тохиргоо
+#define TX 17
+#define RX 16
+
+float lastTemp = 0;
+float lastHumi = 0;
+
+void setup() {
+  M5.begin();
+  Serial.begin(115200);
+  Serial2.begin(115200, SERIAL_8N1, RX, TX);
+  
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.println("LoRa Receiver 0009");
+  
+  // WiFi холбогдох
+  M5.Lcd.println("Connecting WiFi...");
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    M5.Lcd.print(".");
+  }
+  
+  M5.Lcd.println("\nWiFi Connected!");
+  M5.Lcd.println(WiFi.localIP());
+  delay(2000);
+}
+
+void loop() {
+  // LoRa хүлээн авах
+  if (Serial2.available()) {
+    String received = Serial2.readStringUntil('\n');
+    received.trim();
+    
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.println("=== RECEIVER 0009 ===");
+    M5.Lcd.println("Received:");
+    M5.Lcd.println(received);
+    
+    // Өгөгдөл задлах (temperature,humidity)
+    int commaIndex = received.indexOf(',');
+    if (commaIndex > 0) {
+      lastTemp = received.substring(0, commaIndex).toFloat();
+      lastHumi = received.substring(commaIndex + 1).toFloat();
+      
+      M5.Lcd.printf("\nTemp: %.1f C\n", lastTemp);
+      M5.Lcd.printf("Humi: %.1f %%\n", lastHumi);
+      
+      // Ambient руу илгээх
+      sendToAmbient(lastTemp, lastHumi);
+    }
+  }
+  
+  delay(100);
+}
+
+void sendToAmbient(float temp, float humi) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    
+    // Ambient API URL
+    String url = "http://ambidata.io/api/v2/channels/" + String(channelId) + "/data";
+    
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+    
+    // JSON өгөгдөл бэлтгэх
+    String json = "{\"writeKey\":\"" + String(writeKey) + "\",";
+    json += "\"d1\":\"" + String(temp, 1) + "\",";
+    json += "\"d2\":\"" + String(humi, 1) + "\"}";
+    
+    int httpCode = http.POST(json);
+    
+    M5.Lcd.println("\n--- Ambient ---");
+    if (httpCode > 0) {
+      M5.Lcd.printf("Response: %d\n", httpCode);
+      if (httpCode == 200) {
+        M5.Lcd.println("Success!");
+      }
+    } else {
+      M5.Lcd.println("Send Failed!");
+    }
+    
+    http.end();
+  } else {
+    M5.Lcd.println("WiFi Disconnected!");
+  }
+}

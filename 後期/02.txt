@@ -1,0 +1,59 @@
+//LORA 0002コード（送信機）
+//This code will read DHT11 and transmit LoRa:
+
+#include <M5Stack.h>
+#include <DHT.h>
+
+// DHT11 setting
+#define DHTPIN 32        // GPI  pin
+#define DHTTYPE DHT11    
+DHT dht(DHTPIN, DHTTYPE);
+
+// LoRa settings
+#define TX 17
+#define RX 16
+
+void setup() {
+  M5.begin();
+  Serial.begin(115200);
+  Serial2.begin(115200, SERIAL_8N1, RX, TX); // LoRa modul
+  
+  dht.begin();
+  
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.println("LoRa Sender 0002");
+  M5.Lcd.println("DHT11 Reading...");
+  
+  delay(2000);
+}
+
+void loop() {
+  // DHT11 read
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
+  
+  // error check
+  if (isnan(humidity) || isnan(temperature)) {
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.println("DHT11 Error!");
+    delay(2000);
+    return;
+  }
+  
+  // display show
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setCursor(0, 0);
+  M5.Lcd.println("=== SENDER 0002 ===");
+  M5.Lcd.printf("Temp: %.1f C\n", temperature);
+  M5.Lcd.printf("Humi: %.1f %%\n", humidity);
+  M5.Lcd.println("\nSending via LoRa...");
+  
+  // LoRa sent
+  String data = String(temperature, 1) + "," + String(humidity, 1);
+  Serial2.println(data);
+  
+  M5.Lcd.println("Sent: " + data);
+  
+  delay(10000); // 10 send every second
+}

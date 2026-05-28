@@ -1,0 +1,102 @@
+サーバ証明書作成 ― ЯГ ХИЙХ КОМАНДУУД
+① www1.example.jp дээр (Web сервер / AlmaLinux)
+1. www1 руу SSH
+ssh security@www1.example.jp
+
+2. Private key үүсгэх
+openssl genrsa -out www1.key 2048
+
+
+ Тайлбар:
+
+Серверийн нууц түлхүүр
+
+www1 дээр үлдэнэ
+
+хэзээ ч pki руу явуулахгүй
+
+3.CSR (証明書要求) үүсгэх
+openssl req -new -key www1.key -out www1.csr
+
+
+Асуултууд:
+
+Country, Org гэх мэт → Enter (default OK)
+
+Common Name (CN) →
+
+www1.example.jp
+
+ CN маш чухал
+4. CSR-г pki сервер рүү scp
+scp www1.csr security@pki.example.jp:/tmp/
+
+ ② pki.example.jp дээр (Private CA)
+5. pki руу SSH
+ssh security@pki.example.jp
+
+6. easy-rsa директор руу орох
+cd ~/easy-rsa
+
+7. CSR-г import хийх
+./easyrsa import-req /tmp/www1.csr www1
+
+
+ www1 = сертификатын нэр (alias)
+
+8. CSR-д гарын үсэг зурж сервер сертификат гаргах
+./easyrsa sign-req server www1
+
+
+yes гэж батална
+
+CA passphrase оруулна
+
+ Амжилттай бол:
+
+Certificate created at:
+pki/issued/www1.crt
+
+9. Гаргасан сертификатыг www1 рүү буцаах
+scp pki/issued/www1.crt security@www1.example.jp:/tmp/
+
+③ Дахин www1.example.jp дээр
+10. Сертификат ба key-г зөв байршилд тавих
+sudo mkdir -p /etc/pki/tls/www1
+sudo cp /tmp/www1.crt /etc/pki/tls/www1/
+sudo cp www1.key /etc/pki/tls/www1/
+
+🟨(Хэрвээ HTTPS тохируулах бол – Apache)
+sudo dnf install -y httpd mod_ssl
+sudo systemctl start httpd
+
+
+Apache SSL config-д:
+
+SSLCertificateFile /etc/pki/tls/www1/www1.crt
+SSLCertificateKeyFile /etc/pki/tls/www1/www1.key
+
+Бүх урсгал 1 мөрөөр
+www1: key + CSR
+   ↓ scp
+pki: sign (easy-rsa)
+   ↓ scp
+www1: HTTPS ашиглах
+
+ Чеклист
+
+ www1.key → www1 дээр
+
+ www1.csr → pki руу явсан
+
+ www1.crt → CA-аар sign хийгдсэн
+
+ CA private key → pki-ээс гараагүй
+
+
+sudo apachectl configtest
+
+
+ls -l /etc/pki/tls/private/www1.key
+ls -l /etc/pki/tls/certs/www1.crt
+ls -l /etc/pki/ca-trust/source/anchors/ca.crt

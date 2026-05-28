@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Миний веб хуудас</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent: #c8f135;
+      --text: #f0ede6;
+      --muted: #888;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute;
+      top: 50%; left: -1%;
+      transform: translateY(-55%);
+      font-family: var(--font-display);
+      font-size: clamp(120px, 20vw, 220px);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px #222;
+      letter-spacing: -0.04em;
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s forwards;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-family: var(--font-body);
+      font-weight: 300;
+      color: var(--accent);
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      max-width: 480px;
+      font-size: 1rem;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+    }
+    .btn-primary:hover { background: #d6ff45; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+    /* WORKS */
+    .section {
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+    .section-label::before {
+      content: '— ';
+      color: var(--accent);
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+    }
+    .work-card {
+      background: var(--bg);
+      padding: 2.5rem;
+      transition: background 0.25s;
+      cursor: pointer;
+    }
+    .work-card:hover { background: var(--surface); }
+    .work-num {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .work-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .work-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .work-tags { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .about-title span { color: var(--accent); }
+    .about-body { color: var(--muted); font-size: 0.95rem; }
+    .skills-list {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .skill-item {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .skill-item::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      max-width: 600px;
+    }
+    .contact-inner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .contact-inner p { color: var(--muted); margin-bottom: 2rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 2.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 0 1.25rem 4rem; }
+      .section { padding: 4rem 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">dev<span>.</span>mn</div>
+  <ul class="nav-links">
+    <li><a href="#works">Ажлууд</a></li>
+    <li><a href="#about">Миний тухай</a></li>
+    <li><a href="#contact">Холбоо барих</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-text">CREATE</div>
+  <p class="hero-tag">Веб хөгжүүлэгч &amp; Дизайнер</p>
+  <h1>Санааг <em>бодит</em><br>болгодог хүн</h1>
+  <p class="hero-sub">Хэрэглэгчдэд ойртсон, ажиллагаатай, гоё харагдахуйц веб шийдлүүд хийдэг.</p>
+  <div class="hero-cta">
+    <a href="#works" class="btn btn-primary">Ажлуудыг үзэх →</a>
+    <a href="#contact" class="btn btn-outline">Холбоо барих</a>
+  </div>
+</section>
+
+<section class="section" id="works">
+  <p class="section-label">Сонгомол ажлууд</p>
+  <div class="works-grid">
+    <div class="work-card">
+      <p class="work-num">01</p>
+      <h3 class="work-title">E-Commerce Platform</h3>
+      <p class="work-desc">Бүтэн стэк онлайн дэлгүүрийн систем. Төлбөр, захиалга, бараа бүртгэл.</p>
+      <div class="work-tags">
+        <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="work-card">
+      <p class="work-num">02</p>
+      <h3 class="work-title">Dashboard UI</h3>
+      <p class="work-desc">Аналитик мэдээллийг харуулах realtime dashboard. 50+ chart компонент.</p>
+      <div class="work-tags">
+        <span class="tag">Vue</span><span class="tag">D3.js</span><span class="tag">WebSocket</span>
+      </div>
+    </div>
+    <div class="work-card">
+      <p class="work-num">03</p>
+      <h3 class="work-title">Mobile App</h3>
+      <p class="work-desc">iOS/Android хоёуланд ажилладаг хөдөлгөөний апп. GPS tracking, offline mode.</p>
+      <div class="work-tags">
+        <span class="tag">React Native</span><span class="tag">Firebase</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <p class="section-label">Миний тухай</p>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-title">Кодоор <span>яриа</span> хийдэг.</h2>
+    </div>
+    <div>
+      <p class="about-body">Full-stack хөгжүүлэгч. Frontend-ийн гоо сайхан, backend-ийн хүч чадлыг хослуулан хэрэглэгчдэд үнэ цэнэтэй бүтээгдэхүүн хийдэг.</p>
+      <div class="skills-list">
+        <span class="skill-item">JavaScript / TypeScript</span>
+        <span class="skill-item">React / Next.js</span>
+        <span class="skill-item">Node.js / Express</span>
+        <span class="skill-item">Python / Django</span>
+        <span class="skill-item">PostgreSQL / MongoDB</span>
+        <span class="skill-item">Docker / CI/CD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <p class="section-label">Холбоо барих</p>
+  <div class="contact-inner">
+    <h2>Хамтран ажиллацгаая.</h2>
+    <p>Төсөл байна уу? Санаа байна уу? Надад бичээрэй — ярилцацгаая.</p>
+    <a href="mailto:hello@example.com" class="btn btn-primary">hello@example.com →</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 dev.mn</span>
+  <span>GitHub Pages дээр байрлуулсан</span>
+</footer>
+
+</body>
+</html>
