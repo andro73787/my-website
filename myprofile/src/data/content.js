@@ -33,11 +33,11 @@ const content = {
     about: {
       title: "About Me",
       bio: [
-        "I'm Andromel, a 2nd Year Computer Science student at Oita University, Japan. I've been living in Japan for 5 years and I'm passionate about cybersecurity — especially Network Security, IoT Security, and Web Security.",
+        "I'm Undarmaa, a 2nd Year Computer Science student at Oita University, Japan. I've been living in Japan for 5 years and I'm passionate about cybersecurity — especially Network Security, IoT Security, and Web Security.",
         "Currently studying cybersecurity and building security-related projects, always exploring new vulnerabilities, tools, and techniques in the security space.",
       ],
       details: {
-        name: "Andromel",
+        name: "Undarmaa",
         university: "Oita University, Japan",
         major: "Computer Science · 2nd Year",
         location: "Japan · Living in Japan for 5 years",
@@ -354,7 +354,7 @@ const content = {
       ],
     },
     footer: {
-      copy: "Designed & built by Andromel",
+      copy: "Designed & built by Undarmaa",
     },
   },
 
@@ -396,7 +396,7 @@ const content = {
         "ネットワークセキュリティ、IoTセキュリティ、Webセキュリティに興味があります。現在はサイバーセキュリティを学びながら、セキュリティ関連のプロジェクトに取り組んでいます。",
       ],
       details: {
-        name: "アンドロメル",
+        name: "ウンダルマー",
         university: "大分大学",
         major: "情報科学 · 2年生",
         location: "大分、日本 · 日本在住5年",
@@ -706,7 +706,7 @@ const content = {
       ],
     },
     footer: {
-      copy: "デザイン・開発：アンドロメル",
+      copy: "デザイン・開発：ウンダルマー",
     },
   },
 };
