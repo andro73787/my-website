@@ -1,0 +1,264 @@
+.skills {
+  background: var(--bg-primary);
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.skills__category {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.skills__cat-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-light);
+  font-family: var(--font-mono);
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.skills__cat-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Progress bar skills */
+.skill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skill__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.skill__name-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.skill__name {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.skill__sublabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.skill__level {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.skill__track {
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.skill__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+/* Tag-style skills */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border: 1px solid rgba(165, 152, 247, 0.25);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.skill-tag:hover {
+  border-color: var(--accent);
+  background: rgba(165, 152, 247, 0.15);
+}
+
+/* Languages */
+.skills__languages {
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.skills__lang-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.skills__lang-tag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.25rem;
+  min-width: 180px;
+  transition: border-color var(--transition);
+}
+
+.skills__lang-tag:hover {
+  border-color: var(--accent);
+}
+
+.skills__lang-tag--expanded {
+  min-width: 260px;
+}
+
+.skills__lang-tag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skills__lang-details {
+  margin-top: 0.65rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.65rem;
+}
+
+.skills__lang-details li {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.skills__lang-details li::marker {
+  color: var(--accent-light);
+}
+
+.skills__lang-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.skills__lang-level {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Japanese Language Achievements */
+.skills__lang-achievements-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  font-family: var(--font-mono);
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.skills__lang-achievements {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid var(--border);
+  margin-left: 0.5rem;
+}
+
+.lang-ach {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.8rem 0 0.8rem 1.25rem;
+  position: relative;
+}
+
+.lang-ach::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 1.1rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-primary);
+}
+
+.lang-ach__year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.lang-ach__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.lang-ach__title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.lang-ach__sub {
+  font-size: 0.82rem;
+  color: var(--accent-light);
+  line-height: 1.4;
+}
+
+.lang-ach__note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 0.1rem;
+}

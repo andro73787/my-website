@@ -1,0 +1,113 @@
+.experience {
+  background: var(--bg-primary);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  border-radius: 1px;
+}
+
+.timeline__item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.timeline__item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: -2.4rem;
+  top: 0.9rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  border: 2px solid var(--bg-primary);
+}
+
+.timeline__card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.timeline__card:hover {
+  border-color: var(--border-light);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.timeline__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.timeline__role {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timeline__company {
+  font-size: 0.9rem;
+  color: var(--accent-light);
+  margin-top: 0.15rem;
+}
+
+.timeline__period {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #ffffff;
+  white-space: nowrap;
+  padding: 0.25rem 0.6rem;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.timeline__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timeline__list-item {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding-left: 1.25rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.timeline__list-item::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 0.75rem;
+  top: 0.1rem;
+}
+
+@media (max-width: 600px) {
+  .timeline__header {
+    flex-direction: column;
+  }
+}
