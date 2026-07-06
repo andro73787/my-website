@@ -88,8 +88,9 @@
 }
 
 .project-card__period {
-  font-size: 0.875rem;
-  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
   font-family: var(--font-mono);
 }
 

@@ -182,8 +182,9 @@
 }
 
 .skills__lang-level {
-  font-size: 0.875rem;
-  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 /* Japanese Language Achievements */
@@ -259,8 +260,9 @@
 }
 
 .lang-ach__note {
-  font-size: 0.875rem;
-  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
   font-family: var(--font-mono);
   margin-top: 0.1rem;
 }

@@ -76,8 +76,9 @@
 
 .timeline__period {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
   white-space: nowrap;
   padding: 0.25rem 0.6rem;
   background: var(--bg-secondary);
