@@ -1,5 +1,6 @@
 import useInView from '../hooks/useInView';
 import { useLanguage } from '../context/LanguageContext';
+import profilePhoto from '../assets/profile.jpg';
 import './About.css';
 
 export default function About() {
@@ -20,7 +21,9 @@ export default function About() {
               <p key={i} className="about__para">{p}</p>
             ))}
             <div className="about__avatar">
-              <div className="about__avatar-inner">AN</div>
+              <div className="about__avatar-inner">
+                <img src={profilePhoto} alt="Profile" />
+              </div>
             </div>
           </div>
 
