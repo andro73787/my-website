@@ -62,21 +62,22 @@
 }
 
 .timeline__role {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .timeline__company {
-  font-size: 0.9rem;
-  color: var(--accent-light);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #a78bfa;
   margin-top: 0.15rem;
 }
 
 .timeline__period {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: #ffffff;
+  font-size: 0.875rem;
+  color: #a0aec0;
   white-space: nowrap;
   padding: 0.25rem 0.6rem;
   background: var(--bg-secondary);
@@ -90,8 +91,9 @@
 }
 
 .timeline__list-item {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #e2e8f0;
   padding-left: 1.25rem;
   position: relative;
   line-height: 1.6;

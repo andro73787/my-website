@@ -19,11 +19,11 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--accent-light);
+  color: #a78bfa;
   font-family: var(--font-mono);
   margin-bottom: 0.25rem;
   padding-bottom: 0.5rem;
@@ -56,9 +56,9 @@
 }
 
 .skill__name {
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #e2e8f0;
 }
 
 .skill__sublabel {
@@ -97,10 +97,10 @@
 }
 
 .skill-tag {
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-family: var(--font-mono);
-  font-weight: 500;
-  color: var(--accent-light);
+  font-weight: 600;
+  color: #ffffff;
   background: var(--accent-glow);
   border: 1px solid rgba(165, 152, 247, 0.25);
   border-radius: 4px;
@@ -165,8 +165,9 @@
 }
 
 .skills__lang-details li {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #e2e8f0;
   line-height: 1.5;
 }
 
@@ -175,14 +176,14 @@
 }
 
 .skills__lang-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .skills__lang-level {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 0.875rem;
+  color: #a0aec0;
 }
 
 /* Japanese Language Achievements */
@@ -244,21 +245,22 @@
 }
 
 .lang-ach__title {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #e2e8f0;
   line-height: 1.5;
 }
 
 .lang-ach__sub {
-  font-size: 0.82rem;
-  color: var(--accent-light);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a78bfa;
   line-height: 1.4;
 }
 
 .lang-ach__note {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+  font-size: 0.875rem;
+  color: #a0aec0;
   font-family: var(--font-mono);
   margin-top: 0.1rem;
 }
