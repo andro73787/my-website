@@ -93,12 +93,16 @@ ul { list-style: none; }
 .btn--primary {
   background: var(--accent);
   color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding: 0.875rem 2.25rem;
+  box-shadow: 0 4px 18px rgba(124, 110, 239, 0.45);
 }
 
 .btn--primary:hover {
   background: var(--accent-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--accent-glow);
+  box-shadow: 0 10px 30px var(--accent-glow);
 }
 
 .btn--outline {
