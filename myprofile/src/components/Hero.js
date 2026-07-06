@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import profilePhoto from '../assets/profile.jpg';
 import './Hero.css';
 
 function MatrixRain() {
@@ -153,10 +154,7 @@ export default function Hero() {
           <div className="hero__photo-wrap">
             <div className="hero__photo-ring">
               <div className="hero__photo-inner">
-                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero__photo-svg">
-                  <circle cx="60" cy="45" r="24" fill="rgba(165,152,247,0.25)" />
-                  <ellipse cx="60" cy="105" rx="38" ry="22" fill="rgba(165,152,247,0.15)" />
-                </svg>
+                <img src={profilePhoto} alt="Profile" className="hero__photo-img" />
               </div>
             </div>
           </div>
